@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Add a Business relation and businessId in a later migration when tenancy exists.
+model Call {
+  id              String   @id @default(cuid())
+  vapiCallId      String   @unique @db.VarChar(255)
+  callerNumber    String?  @db.VarChar(64)
+  status          String?  @db.VarChar(64)
+  startedAt       DateTime? @db.Timestamptz(3)
+  endedAt         DateTime? @db.Timestamptz(3)
+  durationSeconds Float?
+  transcript      String?  @db.Text
+  summary         String?  @db.Text
+  endReason       String?  @db.VarChar(255)
+  createdAt       DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([createdAt])
+}
